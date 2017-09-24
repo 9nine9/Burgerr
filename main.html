@@ -1,0 +1,119 @@
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>Canvas Drag and Drop Test</title>
+		<script src="./jquery-2.1.1.min.js"></script>
+	</head>
+	
+	<body onmousemove="followCursor(event)">
+		<div>
+			<button onClick="reset()">RESET</button>
+			<div id="trash" ondrop="deleteItem(event)" ondragover="allowDrop(event)">TRASH</div><br><br>
+			<div id="order" ondrop="drop(event)" ondragover="allowDrop(event)"> 
+		
+			</div>
+
+			<div id="item1" draggable="true" ondragstart="drag(event)" style="background-color:red;width:200px;height:20px"></div>
+			<div id="item2" draggable="true" ondragstart="drag(event)" style="background-color:blue;width:20px;height:20px"></div>
+		</div>
+		<button onClick="submitOrder()">submit</button>
+
+		<div id="msg">mntap</div>
+	</body>
+</html>
+
+<style>
+#trash, #order{
+    width: 350px;
+    min-height: 70px;
+    padding: 10px;
+    border: 1px solid #aaaaaa;
+}
+#order{
+	display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+#msg{
+    position: absolute;
+    float: left;
+}
+</style>
+<script>
+	var temp = [];
+	var msg = document.getElementById('msg');
+	function followCursor(ev) {
+		msg.style = "left:" + (ev.pageX + 20) + ";top:" + ev.pageY;
+	}
+
+	var order = document.getElementById('order');
+	order.innerHTML = '';
+
+	var itemList = ['item1', 'item2'];
+	var itemCount = 0;
+	var source, target;
+	
+	function allowDrop(ev) {
+   		ev.preventDefault();
+	}
+
+	function drag(ev) {
+    	ev.dataTransfer.effectAllowed = "move";
+    	source =ev.target;
+    }
+
+	function drop(ev) {
+	    target = ev.target;
+		
+	    if(itemList.includes(source.id) && target.id == "order"){
+		    var sourceCopy = document.getElementById(source.id).cloneNode(true);
+	  		sourceCopy.id = source.id + '_' + itemCount;
+	  		target.insertBefore(sourceCopy, target.firstChild);
+		    itemCount++;
+		}
+		else if(target.id != "order"){
+			if(!itemList.includes(source.id) && source.id != target.id){
+				var A = source.cloneNode(true);
+				var B = target.cloneNode(true);
+				document.getElementById('order').replaceChild(A, target);
+				document.getElementById('order').replaceChild(B, source);
+				var child = document.getElementById(target.id);
+				/*var parent = child.parentNode;
+				var index = Array.prototype.indexOf.call(parent.children, child);
+				console.log(index);*/
+			}
+		}
+
+		while(temp.length > 0) {
+    		temp.pop();
+		}
+		for(var i = 0; i < order.childNodes.length; i++){
+			temp.push(order.childNodes[i]);
+		}
+		console.log(temp);
+	}
+
+	function deleteItem(ev){
+		if(!itemList.includes(source.id) && source.id != "order"){
+			target = ev.target;
+			target.appendChild(document.getElementById(source.id));
+			var el = document.getElementById(source.id);
+			el.parentNode.removeChild(el);
+		}
+		
+	}
+
+	function reset(){
+		order.innerHTML = '';
+	}
+
+	function submitOrder(){
+		var orderChild = [];
+		for(var i = 0; i < order.childNodes.length; i++){
+			orderChild.push(order.childNodes[i].id);
+		}
+		console.log(orderChild);
+	}
+</script>
