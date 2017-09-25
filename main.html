@@ -2,19 +2,23 @@
 	<head>
 		<meta charset="UTF-8" />
 		<title>Canvas Drag and Drop Test</title>
-		<script src="./jquery-2.1.1.min.js"></script>
 	</head>
 	
-	<body onmousemove="followCursor(event)">
+	<body>
 		<div>
 			<button onClick="reset()">RESET</button>
-			<div id="trash" ondrop="deleteItem(event)" ondragover="allowDrop(event)">TRASH</div><br><br>
-			<div id="order" ondrop="drop(event)" ondragover="allowDrop(event)"> 
-		
+			<div id="control">
+				<div id="trash" ondrop="deleteItem(event)">TRASH</div><br><br>
+				<div id="order" ondrop="drop(event)"> 
+				</div>
 			</div>
 
-			<div id="item1" draggable="true" ondragstart="drag(event)" style="background-color:red;width:200px;height:20px"></div>
-			<div id="item2" draggable="true" ondragstart="drag(event)" style="background-color:blue;width:20px;height:20px"></div>
+			<div id="item">
+				<div id="item1" draggable="true" class="no_scale" style="background-color:red">ITEM 1</div>
+				<div id="item2" draggable="true" class="no_scale" style="background-color:blue">ITEM 2</div>
+				<div id="item3" draggable="true" class="no_scale" style="background-color:green">ITEM 3</div>
+				<div id="item4" draggable="true" class="no_scale" style="background-color:grey">ITEM 4</div>
+			</div>
 		</div>
 		<button onClick="submitOrder()">submit</button>
 
@@ -23,26 +27,58 @@
 </html>
 
 <style>
-#trash, #order{
+#trash, #order, #item{
     width: 350px;
     min-height: 70px;
     padding: 10px;
-    border: 1px solid #aaaaaa;
+    border: 1px solid #000;
 }
-#order{
+#order, #item{
 	display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
+    min-height: 10px;
+    padding-bottom:50px;
 }
 #msg{
     position: absolute;
     float: left;
 }
+.scale{
+	width:180px;
+	height:45px;
+}
+
+.no_scale{
+	width:200px;
+	height:50px;
+}
 </style>
 <script>
-	var temp = [];
+	function initEventHandler(parentID, childElement){
+		var theParent = document.getElementById(parentID);
+		var theChilds = theParent.querySelectorAll(childElement);
+		for(var i = 0; i < theChilds.length; i++){
+			theChilds[i].setAttribute('ondragstart', 'drag(event)');
+			theChilds[i].setAttribute('onmouseover', 'scale(event)');
+			theChilds[i].setAttribute('onmouseout', 'noScale(event)');
+		}
+	}
+	
+	initEventHandler('item', 'div');
+	var theParent = document.querySelector("#control");
+	theParent.addEventListener("dragover", allowDrop, false);	
+
+
+	function scale(ev){
+		document.getElementById(ev.target.id).className = "scale";
+	}
+	function noScale(ev){
+		document.getElementById(ev.target.id).className = "no_scale";
+	}
+
 	var msg = document.getElementById('msg');
 	function followCursor(ev) {
 		msg.style = "left:" + (ev.pageX + 20) + ";top:" + ev.pageY;
@@ -51,7 +87,8 @@
 	var order = document.getElementById('order');
 	order.innerHTML = '';
 
-	var itemList = ['item1', 'item2'];
+	var itemList = ['item1', 'item2', 'item3', 'item4'];
+	var orderChild = [];
 	var itemCount = 0;
 	var source, target;
 	
@@ -70,6 +107,7 @@
 	    if(itemList.includes(source.id) && target.id == "order"){
 		    var sourceCopy = document.getElementById(source.id).cloneNode(true);
 	  		sourceCopy.id = source.id + '_' + itemCount;
+	  		sourceCopy.className = "no_scale";
 	  		target.insertBefore(sourceCopy, target.firstChild);
 		    itemCount++;
 		}
@@ -79,41 +117,50 @@
 				var B = target.cloneNode(true);
 				document.getElementById('order').replaceChild(A, target);
 				document.getElementById('order').replaceChild(B, source);
-				var child = document.getElementById(target.id);
-				/*var parent = child.parentNode;
-				var index = Array.prototype.indexOf.call(parent.children, child);
-				console.log(index);*/
+
+				/*var parent = target.parentNode;
+				var indexSource = Array.prototype.indexOf.call(parent.children, source);
+				var indexTarget = Array.prototype.indexOf.call(parent.children, target);
+			
+				orderChild.splice(indexTarget, 0, source);
+				orderChild.splice(indexSource, 1);
+*/
+
 			}
 		}
-
-		while(temp.length > 0) {
-    		temp.pop();
-		}
-		for(var i = 0; i < order.childNodes.length; i++){
-			temp.push(order.childNodes[i]);
-		}
-		console.log(temp);
+		updateOrder();
 	}
 
 	function deleteItem(ev){
-		if(!itemList.includes(source.id) && source.id != "order"){
+		if(!itemList.includes(source.id) && source.id != "order" && source.id != "item"){
 			target = ev.target;
 			target.appendChild(document.getElementById(source.id));
 			var el = document.getElementById(source.id);
 			el.parentNode.removeChild(el);
+			updateOrder();
 		}
-		
 	}
 
 	function reset(){
 		order.innerHTML = '';
 	}
 
-	function submitOrder(){
-		var orderChild = [];
-		for(var i = 0; i < order.childNodes.length; i++){
-			orderChild.push(order.childNodes[i].id);
+	function updateOrder(){
+		while(orderChild.length > 0) {
+    		orderChild.pop();
 		}
-		console.log(orderChild);
+		for(var i = 0; i < order.childNodes.length; i++){
+			orderChild.push(order.childNodes[i]);
+		}
+		//console.log(orderChild);
+	}
+
+	function submitOrder(){
+		var orderChildID = [];
+		for(var i = 0; i < orderChild.length; i++){
+			var temp = orderChild[i].id.split('_', 1);;
+			orderChildID.push(temp[0]);
+		}
+		console.log(orderChildID);
 	}
 </script>
