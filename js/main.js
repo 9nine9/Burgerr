@@ -1,52 +1,3 @@
-<html>
-	<head>
-		<meta charset="UTF-8" />
-		<title>Burgerr - Your Delicious Burger</title>
-		<link href="css/simple-grid.min.css" rel="stylesheet" media="screen" />
-		<link href="css/stylesheet.css" rel="stylesheet" media="screen" />
-		
-	</head>
-	
-	<body>
-		<div class="container">
-			<div class="row">
-
-				<div class="col-6">
-					<div id="control">
-
-						<div class="col-12">
-							<div id="trash" ondrop="deleteItem(event)"> 
-								<button onClick="reset()">RESET</button>
-								<p>TRASH</p>
-							</div>
-						</div>
-
-						<div class="col-12">
-							<div id="order" ondrop="drop(event)"></div>
-						</div>
-
-						<div class="col-12">
-							<button onClick="submitOrder()">SUBMIT MY BURGER</button>
-						</div>
-
-					</div>
-				</div>
-
-				<div class="col-6">
-					<div id="item">			
-						<img src="img/bread-bottom.png" id="item1" draggable="true" class="no_scale">
-						<img src="img/bread-top.png" id="item2" draggable="true" class="no_scale">
-						<img src="img/vegetable.png" id="item3" draggable="true" class="no_scale">
-					</div>
-				</div>
-
-			</div>
-		</div>
-
-		<div id="msg">mntap</div>
-	</body>
-</html>
-<script>
 
 	var order = document.getElementById('order');
 	reset();
@@ -137,4 +88,3 @@
 		}
 		confirm(result);
 	}
-</script>

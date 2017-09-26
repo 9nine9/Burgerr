@@ -1,0 +1,34 @@
+#trash, #order, #item{
+    min-height: 70px;
+    padding: 10px;
+    border: 1px solid #000;
+}
+#order, #item{
+	display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    min-height: 10px;
+    padding-bottom:150px;
+}
+#msg{
+    position: absolute;
+    float: left;
+}
+.scale{
+	width:220px;
+	height:135px;
+	margin-bottom:-30px;
+	margin-top:30px;
+	z-index:5;
+	filter: brightness(130%);
+    -webkit-filter: brightness(130%);
+}
+
+.no_scale{
+	width:200px;
+	height:130px;
+	margin-bottom:-70px;
+
+}
