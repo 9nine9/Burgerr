@@ -1,20 +1,21 @@
+/* body */
 #trash, #order, #item{
     min-height: 70px;
     padding: 10px;
-    border: 1px solid #000;
+    border: 3px solid chocolate;
+    text-align:center;
 }
 #order, #item{
 	display: flex;
     flex-direction: column-reverse;
-    flex-wrap: wrap;
-    justify-content: center;
     align-items: center;
     min-height: 10px;
     padding-bottom:150px;
 }
-#msg{
-    position: absolute;
-    float: left;
+
+#order{
+	overflow-y:auto;
+	height:200px;
 }
 .scale{
 	width:220px;
@@ -32,3 +33,40 @@
 	margin-bottom:-70px;
 
 }
+
+/* header */
+header{
+	background-color:chocolate;
+	width:100%;
+	min-height:90px;
+}
+
+.logo, .sub-logo{
+	color:white;
+	font-weight:bold;
+	font-size:38px;
+}
+
+.sub-logo{
+	font-size:18px;
+}
+
+/* footer */
+footer{
+	background-color:chocolate;
+	width:100%;
+	min-height:80px;
+	position:absolute;
+}
+
+/* button */
+button{
+	background-color:chocolate;
+	color:white;
+	height:30px;
+	cursor:pointer;
+	border: none;
+	width:100%;
+}
+
+
