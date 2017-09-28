@@ -7,6 +7,7 @@
 		<title>Burgerr - Your Delicious Burger</title>
 		<link href="css/simple-grid.min.css" rel="stylesheet" media="screen" />
 		<link href="css/stylesheet.css" rel="stylesheet" media="screen" />
+		<script src="js/item.js"></script>
 		<script src="js/main.js"></script>
 	</head>
 	
@@ -43,10 +44,18 @@
 				</div>
 
 				<div class="col-6">
-					<div id="item">			
-						<img src="img/bread-bottom.png" id="item1" draggable="true" class="no_scale">
-						<img src="img/bread-top.png" id="item2" draggable="true" class="no_scale">
-						<img src="img/vegetable.png" id="item3" draggable="true" class="no_scale">
+					<div id="item" class="col-12">
+						<img src="img/bread-bottom.png" id="item1" draggable="true" class="no-scale">
+						<img src="img/bread-top.png" id="item2" draggable="true" class="no-scale">
+						<img src="img/vegetable.png" id="item3" draggable="true" class="no-scale">
+						<img src="img/meal.png" id="item4" draggable="true" class="no-scale">
+						<img src="img/egg.png" id="item5" draggable="true" class="no-scale">
+					</div>
+					<div class="col-12"> 
+						<div class="det">Detail Order</div>
+						<div id="table-detail"> 
+							<table id="detail"></table>
+						</div>
 					</div>
 				</div>
 
@@ -58,6 +67,3 @@
 		</footer>
 	</body>
 </html>
-<script>
-
-</script>

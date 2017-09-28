@@ -1,18 +1,14 @@
-	// ID items of burger
-	var itemList = [
-					'item1',
-					'item2',
-					'item3',
-					'item4'
-					];
-
 	var order; 			// for order the burger
 	var itemCount = 0; 	// count the items in the order
 	var sourc; 			// source element when drag start
 	var target;			// target element when drop the source element
+	var itemOrder;
+	var total = 0;
+	var detail
 
 	//execute it after 'main.html' is loaded
 	window.onload = function(){
+		detail = document.getElementById('detail');
 		order = document.getElementById('order');
 		reset();
 
@@ -49,7 +45,7 @@
 
 	// normai condition for the item when mouse out on it
 	function noScale(ev){
-		document.getElementById(ev.target.id).className = "no_scale";
+		document.getElementById(ev.target.id).className = "no-scale";
 	}
 	
 	// allow drop
@@ -66,34 +62,35 @@
     // when item is dropped
 	function drop(ev) {
 	    target = ev.target;
-		
+
 		// add item to order
-	    if(itemList.includes(source.id)){
+	    if(itemList[0].includes(source.id)){
 		    var sourceCopy = document.getElementById(source.id).cloneNode(true);
 	  		sourceCopy.id = source.id + '_' + itemCount;
-	  		sourceCopy.className = "no_scale";
+	  		sourceCopy.className = "no-scale";
 	  		order.appendChild(sourceCopy, order.firstChild);
 		    itemCount++;
 		}
 		// swap the item with other item
 		else if(target.id != "order"){
-			if(!itemList.includes(source.id) && source.id != target.id){
+			if(!itemList[0].includes(source.id) && source.id != target.id){
 				var A = source.cloneNode(true);
 				var B = target.cloneNode(true);
 				document.getElementById('order').replaceChild(A, target);
 				document.getElementById('order').replaceChild(B, source);
 			}
 		}
-
+		costOrder();
 	}
 
 	// delete item
 	function deleteItem(ev){
-		if(!itemList.includes(source.id) && source.id != "order" && source.id != "item"){
+		if(!itemList[0].includes(source.id) && source.id != "order" && source.id != "item"){
 			target = ev.target;
 			target.appendChild(document.getElementById(source.id));
 			var el = document.getElementById(source.id);
 			el.parentNode.removeChild(el);
+			costOrder();
 		}
 	}
 
@@ -104,7 +101,7 @@
 
 	// submit order
 	function submitOrder(){
-		var orderChildID = [];
+		/*var orderChildID = [];
 		for(var i = order.childNodes.length - 1; i >= 0; i--){
 			var temp = order.childNodes[i].id.split('_', 1);
 			orderChildID.push(temp[0]);
@@ -113,5 +110,41 @@
 		for(var i = 0; i < orderChildID.length; i++){
 			result += orderChildID[i] + '\n';
 		}
-		confirm(result);
+		confirm(result);*/
+		console.log(itemOrder);
+	}
+
+	function costOrder(){
+		itemOrder = [[],[]];
+		detail.innerHTML = '';
+		total = 0;
+
+		for(var i = order.childNodes.length - 1; i >= 0; i--){
+			var temp = order.childNodes[i].id.split('_', 1);
+			var indexItem = itemList[0].indexOf(temp[0]);
+			if(indexItem != -1){
+				var item = temp[0];
+				var cost = itemList[1][indexItem];
+				itemOrder[0].push(item);
+				itemOrder[1].push(cost);
+
+				total += cost;
+				detail.innerHTML += "<tr>" + 
+										"<td>" + 
+											item + 
+										"</td>" +
+										"<td>$" +
+											cost +
+										"</td>" +
+									"</tr>";
+			}
+		}
+		detail.innerHTML += "<tr>" + 
+								"<td>" + 
+									"TOTAL" + 
+								"</td>" +
+								"<td>$" +
+									total +
+								"</td>" +
+							"</tr>";
 	}
