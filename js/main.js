@@ -97,6 +97,7 @@
 	// reset order
 	function reset(){
 		order.innerHTML = '';
+		costOrder();
 	}
 
 	// submit order
@@ -111,7 +112,7 @@
 			result += orderChildID[i] + '\n';
 		}
 		confirm(result);*/
-		console.log(itemOrder);
+		confirm(itemOrder);
 	}
 
 	function costOrder(){
