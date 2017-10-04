@@ -4,7 +4,9 @@
 	var target;			// target element when drop the source element
 	var itemOrder;
 	var total = 0;
-	var detail
+	var detail;
+	var slides;
+	var slideIndex;
 
 	//execute it after 'main.html' is loaded
 	window.onload = function(){
@@ -13,7 +15,7 @@
 		reset();
 
 		// init event for images in the item
-		initEventHandler('item', 'img');
+		initEventHandler('item', 'div img');
 
 		// init event for elements in the control
 		var theParent = document.querySelector("#control");
@@ -23,6 +25,11 @@
     		ev.preventDefault();
     		ev.stopPropagation();
 		}
+
+		slideIndex = 0;
+		slides = document.getElementsByClassName("slide");
+
+		showSlides(slideIndex);
 	}
 
 	// init event for item in the item's parent
@@ -45,7 +52,7 @@
 
 	// normai condition for the item when mouse out on it
 	function noScale(ev){
-		document.getElementById(ev.target.id).className = "no-scale";
+		document.getElementById(ev.target.id).className = "";
 	}
 	
 	// allow drop
@@ -64,16 +71,16 @@
 	    target = ev.target;
 
 		// add item to order
-	    if(itemList[0].includes(source.id)){
+	    if(indexList(itemList, source.id) != -1){
 		    var sourceCopy = document.getElementById(source.id).cloneNode(true);
 	  		sourceCopy.id = source.id + '_' + itemCount;
-	  		sourceCopy.className = "no-scale";
-	  		order.appendChild(sourceCopy, order.firstChild);
+	  		sourceCopy.className = '';
+	  		order.insertBefore(sourceCopy, order.children[order.childNodes.length - 1]);
 		    itemCount++;
 		}
 		// swap the item with other item
-		else if(target.id != "order"){
-			if(!itemList[0].includes(source.id) && source.id != target.id){
+		else if(target.id != "order" && target.id != "0" && target.id != "1"){
+			if(indexList(itemList, source.id) == -1 && source.id != target.id){
 				var A = source.cloneNode(true);
 				var B = target.cloneNode(true);
 				document.getElementById('order').replaceChild(A, target);
@@ -85,7 +92,7 @@
 
 	// delete item
 	function deleteItem(ev){
-		if(!itemList[0].includes(source.id) && source.id != "order" && source.id != "item"){
+		if(indexList(itemList, source.id) == -1 && source.id != "order" && source.id != "item" && source.id != "0" && source.id != "1"){
 			target = ev.target;
 			target.appendChild(document.getElementById(source.id));
 			var el = document.getElementById(source.id);
@@ -96,22 +103,13 @@
 
 	// reset order
 	function reset(){
-		order.innerHTML = '';
+		order.innerHTML = '<img src="img/bread-bottom.png" id="0" draggable="false" onmouseover="scale(event)" onmouseout="noScale(event)">' +
+						'<img src="img/bread-top.png" id="1" draggable="false" onmouseover="scale(event)" onmouseout="noScale(event)">';
 		costOrder();
 	}
 
 	// submit order
 	function submitOrder(){
-		/*var orderChildID = [];
-		for(var i = order.childNodes.length - 1; i >= 0; i--){
-			var temp = order.childNodes[i].id.split('_', 1);
-			orderChildID.push(temp[0]);
-		}
-		var result = '';
-		for(var i = 0; i < orderChildID.length; i++){
-			result += orderChildID[i] + '\n';
-		}
-		confirm(result);*/
 		confirm(itemOrder);
 	}
 
@@ -122,30 +120,64 @@
 
 		for(var i = order.childNodes.length - 1; i >= 0; i--){
 			var temp = order.childNodes[i].id.split('_', 1);
-			var indexItem = itemList[0].indexOf(temp[0]);
+			var indexItem = parseInt(temp[0]);
+			indexItem = indexList(itemList, temp[0]);
 			if(indexItem != -1){
-				var item = temp[0];
-				var cost = itemList[1][indexItem];
-				itemOrder[0].push(item);
-				itemOrder[1].push(cost);
+				var itemName = itemList[indexItem].name;
+				var itemCost = itemList[indexItem].cost;
+				itemOrder[0].push(itemName);
+				itemOrder[1].push(itemCost);
 
-				total += cost;
+				total += itemCost;
 				detail.innerHTML += "<tr>" + 
 										"<td>" + 
-											item + 
+											itemName + 
 										"</td>" +
 										"<td>$" +
-											cost +
+											itemCost +
 										"</td>" +
 									"</tr>";
 			}
 		}
-		detail.innerHTML += "<tr>" + 
-								"<td>" + 
-									"TOTAL" + 
-								"</td>" +
-								"<td>$" +
-									total +
-								"</td>" +
-							"</tr>";
+		document.getElementById('total').innerHTML = "<tr>" + 
+															"<td>" + 
+																"TOTAL" + 
+															"</td>" +
+															"<td>$" +
+																total +
+															"</td>" +
+														"</tr>";
+	}
+
+
+	function showSlides(n) {
+	  	if (n >= slides.length) {
+	  		slideIndex = 0;
+	  	} 
+	  	else if (n < 0) {
+	  		slideIndex = slides.length - 1;
+	  	}
+	  	
+		for (i = 0; i < slides.length; i++) {
+	      slides[i].style.display = "none"; 
+	  	}
+	  	slides[slideIndex].style.display = "block"; 
+	}
+
+	function plusSlides(n) {
+  		showSlides(slideIndex += n);
+	}
+
+	function currentSlide(n) {
+  		showSlides(slideIndex -= n);
+	}
+
+	function indexList(list, value) {
+	    var i;
+	    for (i = 0; i < list.length; i++) {
+	        if (list[i].id === value) {
+	            return i;
+        	}
+    	}
+    	return -1;
 	}

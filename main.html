@@ -44,18 +44,49 @@
 				</div>
 
 				<div class="col-6">
+
 					<div id="item" class="col-12">
-						<img src="img/bread-bottom.png" id="item1" draggable="true" class="no-scale">
-						<img src="img/bread-top.png" id="item2" draggable="true" class="no-scale">
-						<img src="img/vegetable.png" id="item3" draggable="true" class="no-scale">
-						<img src="img/meal.png" id="item4" draggable="true" class="no-scale">
-						<img src="img/egg.png" id="item5" draggable="true" class="no-scale">
+						<div class="row">
+							<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+		 					<a class="next" onclick="plusSlides(1)">&#10095;</a>
+		 				</div>
+
+						<div class="slide"> 
+							<div class="desc">Vegetable - $1</div>
+							<img src="img/vegetable.png" id="2" draggable="true"> 
+						</div>
+						<div class="slide"> 
+							<div class="desc">Cow - $5</div>
+							<img src="img/meal.png" id="3" draggable="true"> 
+						</div>
+						<div class="slide"> 
+							<div class="desc">Egg - $2</div>
+							<img src="img/egg.png" id="4" draggable="true"> 
+						</div>
+						<div class="slide"> 
+							<div class="desc">Tomato - $1</div>
+							<img src="img/tomato.png" id="5" draggable="true"> 
+						</div>
+						<div class="slide"> 
+							<div class="desc">Cheese - $2</div>
+							<img src="img/cheese.png" id="6" draggable="true"> 
+						</div>
+						<div class="slide"> 
+							<div class="desc">Onion - $1</div>
+							<img src="img/onion.png" id="7" draggable="true"> 
+						</div>
+						<div class="slide"> 
+							<div class="desc">Pikle - $1</div>
+							<img src="img/pickle.png" id="8" draggable="true"> 
+						</div>
 					</div>
+
 					<div class="col-12"> 
 						<div class="det">Detail Order</div>
 						<div id="table-detail"> 
 							<table id="detail"></table>
 						</div>
+						<div><table id="total"></table></div>
 					</div>
 				</div>
 

@@ -1,27 +1,24 @@
 /* event */
+#order div img{
+	width:200px;
+	height:130px;
+}
+
+#order img{
+	margin-bottom:-100px;
+}
+
+#order:hover img{
+	margin-bottom:-70px;
+}
+
 .scale{
 	width:220px;
-	height:135px;
-	margin-bottom:-30px;
+	height:140px;
 	margin-top:30px;
 	z-index:5;
 	filter: brightness(130%);
     -webkit-filter: brightness(130%);
-}
-
-.no-scale{
-	width:200px;
-	height:130px;
-	margin-bottom:-70px;
-
-}
-
-.mouse-hover{
-
-}
-
-.mouse-normal{
-	margin-bottom:-70px;
 }
 
 
@@ -32,26 +29,31 @@
     border: 3px solid chocolate;
     text-align:center;
 }
-#order, #item{
+#order{
 	display: flex;
     flex-direction: column-reverse;
-    align-items: center;
     min-height: 10px;
-    padding-bottom:80px;
-}
-
-#order{
-	overflow-y:auto;
-	height:300px;
+    padding-bottom:100px;
+	align-items:center;
+	min-height:300px;
 }
 
 .det{
 	font-weight:bold;
 }
 
-#table-detail{
-	overflow-y:auto;
-	height:200px;
+#item{
+	height:230px;
+}
+
+.slide{
+	display: none;
+}
+
+.desc{
+	color:chocolate;
+	font-weight:bold;
+	margin-top:20px;
 }
 
 
@@ -90,4 +92,45 @@ button{
 	width:100%;
 }
 
+/* Next & previous buttons */
+.prev, .next {
+  	cursor: pointer;
+  	padding: 16px;
+  	color: chocolate;
+  	font-weight: bold;
+  	font-size: 22px;
+  	transition: 0.6s ease;
+  	position: absolute;
+  	border-radius: 0 3px 3px 0;
+}
 
+.prev{
+	left:0;
+}
+
+.next{
+	right:0;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+	color:white;
+  	background-color: chocolate;
+}
+
+button:hover{
+	font-weight:bold;
+}
+
+/* table */
+#table-detail{
+	overflow-y:auto;
+	max-height:200px;
+	width:100%;
+}
+td{
+	width:100%;
+}
+#total{
+	border-top:1px solid black;
+}
