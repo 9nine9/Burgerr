@@ -40,19 +40,8 @@
 		// each image 
 		for(var i = 0; i < theChilds.length; i++){
 			theChilds[i].setAttribute('ondragstart', 'drag(event)');
-			theChilds[i].setAttribute('onmouseover', 'scale(event)');
-			theChilds[i].setAttribute('onmouseout', 'noScale(event)');
+			theChilds[i].className = "scale";
 		}
-	}
-
-	// highlight the item when mouse over on it 
-	function scale(ev){
-		document.getElementById(ev.target.id).className = "scale";
-	}
-
-	// normai condition for the item when mouse out on it
-	function noScale(ev){
-		document.getElementById(ev.target.id).className = "";
 	}
 	
 	// allow drop
@@ -74,7 +63,6 @@
 	    if(indexList(itemList, source.id) != -1){
 		    var sourceCopy = document.getElementById(source.id).cloneNode(true);
 	  		sourceCopy.id = source.id + '_' + itemCount;
-	  		sourceCopy.className = '';
 	  		order.insertBefore(sourceCopy, order.children[order.childNodes.length - 1]);
 		    itemCount++;
 		}
@@ -103,14 +91,19 @@
 
 	// reset order
 	function reset(){
-		order.innerHTML = '<img src="img/bread-bottom.png" id="0" draggable="false" onmouseover="scale(event)" onmouseout="noScale(event)">' +
-						'<img src="img/bread-top.png" id="1" draggable="false" onmouseover="scale(event)" onmouseout="noScale(event)">';
+		var topBread = '<img src="img/bread-top.png" id="1" draggable="false">';
+		var bottomBread = '<img src="img/bread-bottom.png" id="0" draggable="false">';
+		order.innerHTML = bottomBread + topBread;
 		costOrder();
 	}
 
 	// submit order
 	function submitOrder(){
-		confirm(itemOrder);
+		var confirmText = "Do you want order that burger?";
+		var pageOrder = "order.html";
+		if(confirm(confirmText)){
+			window.location = pageOrder;
+		}
 	}
 
 	function costOrder(){
