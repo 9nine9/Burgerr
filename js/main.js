@@ -98,16 +98,20 @@
 	}
 
 	// submit order
-	function submitOrder(){
-		var confirmText = "Do you want order that burger?";
+	function submitOrder(){	
+	   	var confirmText = "Do you want order that burger?";
 		var pageOrder = "order.html";
-		if(confirm(confirmText)){
-			window.location = pageOrder;
-		}
-	}
 
+		if(confirm(confirmText)){
+			var str = JSON.stringify(itemOrder);
+			var queryString = "?json=" + str;
+			window.location = pageOrder + queryString;
+		}
+		
+	}
+	
 	function costOrder(){
-		itemOrder = [[],[]];
+		itemOrder = [];
 		detail.innerHTML = '';
 		total = 0;
 
@@ -116,10 +120,10 @@
 			var indexItem = parseInt(temp[0]);
 			indexItem = indexList(itemList, temp[0]);
 			if(indexItem != -1){
+				var itemID = itemList[indexItem].id;
 				var itemName = itemList[indexItem].name;
 				var itemCost = itemList[indexItem].cost;
-				itemOrder[0].push(itemName);
-				itemOrder[1].push(itemCost);
+				itemOrder.push(new item (itemID, itemName, itemCost));
 
 				total += itemCost;
 				detail.innerHTML += "<tr>" + 
@@ -173,4 +177,10 @@
         	}
     	}
     	return -1;
+	}
+
+	function orderan (id, name, cost) {
+	 	this.id = id;
+		this.name = name;
+		this.cost = cost;
 	}
